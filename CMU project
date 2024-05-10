@@ -1,0 +1,63 @@
+
+app.url = 'cmu://765957/30654661/power+icon.png'
+#picture from vector images 
+browser= Rect(0,75,380,325,fill='darkgray'),Rect(0,0,380,75,fill='blue')
+browserpage=Rect(0,75,380,325,fill = 'white')
+browsertabs= Rect(0,0,150,30)
+browsertabclose = Line(130,15,130,20,fill='white')   
+
+scrollwheelbar = Rect(370,0,30,400)
+scrollWheel = Rect(370,0,30,75,fill = 'white')
+
+taskbar = Rect(0,370,400,400)
+
+StartIcon = Rect(160,380,20,370,fill='aqua')
+taskviewIcon= Rect(190,380,20,370,fill='gray')
+searchIcon= Rect (220,380,20,370,fill = 'lightgray')
+edgeIcon = Circle (260,390,10,fill = 'lightblue')
+
+power = Image(app.url, 100, 315)
+power.width = 20
+power.height = 20
+
+Startmenu= Group(Rect(80,200,250,150, border = 'white', visible =False), Label('Start Menu', 200, 220, fill = 'white'), power, Circle(110, 275, 10, fill = 'white'))
+taskview= Group(Rect(95,200,250,150, border = 'white'), Label('Task View', 200, 220, fill = 'white'), Rect(115, 250, 50, 25, fill = 'white'), Rect(115, 285, 50, 25, fill = 'grey'))
+search = Group(Rect(80,200,250,150, fill = 'lightblue', border = 'white', visible =False), Label('Search', 200, 220, fill = 'white'), Label('Enter Seach here', 150, 320, fill = 'white'))
+edge = Group(Rect(80,200,250,150, fill = 'darkblue', border = 'white', visible =False), Label('Edge', 200, 210, fill = 'white'), Label('www.google.com', 130, 224, fill = 'white'), Rect(90,240, 230, 100, fill = 'white'))
+
+windows = Group(Startmenu, taskview, search, edge)
+
+
+def selectWindow(hitWindow, x, y):
+    for window in windows:
+        if(window == hitWindow):
+            window.selected = True
+            print(window)
+        else:
+            window.selected = False
+
+def onMousePress(x,y):
+    if StartIcon.hits(x,y):
+        Startmenu.visible= True
+        Startmenu.toFront()
+    if taskviewIcon.hits(x,y):
+        taskview.visible= True
+        taskview.toFront()
+    if searchIcon.hits(x,y):
+        search.visible= True
+        search.toFront()
+    if edgeIcon.hits(x,y):
+        edge.visible= True
+        edge.toFront()
+        
+    hitWindow = windows.hitTest(x,y)
+    selectWindow(hitWindow, x, y)
+
+def onMouseDrag(x, y):
+   for window in windows:
+       print(window)
+       if(window.selected == True):
+           window.toFront()
+           if(window != Startmenu):
+               window.centerX = x
+               window.centerY = y
